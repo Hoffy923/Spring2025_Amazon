@@ -32,14 +32,12 @@ namespace MyApp
                 {
                     case 'C':
                     case 'c':
-                        // existing code
                         var newProduct = new Product
                         {
                             Name = Console.ReadLine()
                         };
                         ProductServiceProxy.Current.AddOrUpdate(newProduct);
 
-                        //ensure the cart system tracks stock for this product
                         ShoppingCartServiceProxy.Current.InitializeStockFor(newProduct);
                         break;
 
@@ -50,7 +48,6 @@ namespace MyApp
 
                     case 'U':
                     case 'u':
-                        //select one of the products
                         Console.WriteLine("Which product would you like to update?");
                         
                         int selection = int.Parse(Console.ReadLine() ?? "-1");
@@ -61,21 +58,17 @@ namespace MyApp
                             selectedProd.Name = Console.ReadLine() ?? "ERROR";
                             ProductServiceProxy.Current.AddOrUpdate(selectedProd);
 
-                          //in case it's a newly added product, or we want to ensure the cart tracks it
                             ShoppingCartServiceProxy.Current.InitializeStockFor(selectedProd);
                         }
                         break;
 
                     case 'D':
                     case 'd':
-                        //select one of the products
-                        //throw it away
                         Console.WriteLine("Which product would you like to update?");
                         selection = int.Parse(Console.ReadLine() ?? "-1");
                         ProductServiceProxy.Current.Delete(selection);
                         break;
 
-                    //cart management menu
                     case 'S':
                     case 's':
                         ManageCart();
@@ -83,7 +76,7 @@ namespace MyApp
 
                     case 'Q':
                     case 'q':
-                        //on quit, do checkout
+                  
                         ShoppingCartServiceProxy.Current.CheckoutAndPrintReceipt();
                         break;
 
@@ -96,7 +89,6 @@ namespace MyApp
             Console.ReadLine();
         }
 
-        //submenu for cart
         static void ManageCart()
         {
             char cChoice = ' ';
@@ -150,14 +142,12 @@ namespace MyApp
             Console.WriteLine("Enter the Product ID you want to add:");
             string? input = Console.ReadLine();
 
-            // Safely parse the Product ID
             if (!int.TryParse(input, out int prodId))
             {
                 Console.WriteLine("Invalid product ID—please enter a number.");
                 return;
             }
 
-            // Find product in inventory
             var product = ProductServiceProxy.Current.Products
                 .FirstOrDefault(p => p != null && p.Id == prodId);
 
@@ -170,14 +160,11 @@ namespace MyApp
             Console.WriteLine("How many do you want to add?");
             string? qtyInput = Console.ReadLine();
 
-            // Safely parse the quantity
             if (!int.TryParse(qtyInput, out int qty))
             {
                 Console.WriteLine("Invalid quantity—must be a number.");
                 return;
             }
-
-            // Attempt to add to cart
             bool success = ShoppingCartServiceProxy.Current.AddToCart(product, qty);
             Console.WriteLine(success ? "Added to cart." : "Not enough in stock!");
         }

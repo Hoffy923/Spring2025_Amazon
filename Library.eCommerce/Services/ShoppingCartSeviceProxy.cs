@@ -173,7 +173,7 @@ namespace Library.eCommerce.Services
             Console.WriteLine($"Total Due: {totalDue:C}\n");
 
             cartItems.Clear();
-            //Console.WriteLine("Checkout complete. Thank you!");
+            Console.WriteLine("Checkout complete. Thank you!");
         }
     }
 }
