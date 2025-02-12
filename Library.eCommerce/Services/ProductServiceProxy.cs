@@ -11,7 +11,12 @@ namespace Library.eCommerce.Services
     {
         private ProductServiceProxy()
         {
-            Products = new List<Product?>();
+            Products = new List<Product?>
+            {
+                new Product{Id = 1, Name ="Product 1"},
+                new Product{Id = 2, Name ="Product 2"},
+                new Product{Id = 3, Name ="Product 3"}
+            };
         }
 
         private int LastKey
@@ -71,6 +76,11 @@ namespace Library.eCommerce.Services
             Products.Remove(product);
 
             return product;
+        }
+
+        public Product? GetById(int id)
+        {
+            return Products.FirstOrDefault(p => p.Id == id);
         }
 
     }
